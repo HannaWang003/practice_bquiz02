@@ -16,7 +16,7 @@ class DB
 {
     protected $table;
     protected $pdo;
-    protected $dsn = "mysql:host=loclhost;charset=utf8;dbname=bq02";
+    protected $dsn = "mysql:host=localhost;charset=utf8;dbname=bq02";
     function __construct($table)
     {
         $this->table = $table;
@@ -107,4 +107,21 @@ class DB
     {
         return $this->pdo->query($sql)->fetchAll(PDO::FETCH_ASSOC);
     }
+}
+
+$User = new DB('user');
+$Total = new DB('total');
+$Que = new DB('que');
+$News = new DB('news');
+$Log = new DB('log');
+
+if (!isset($_SESSION['visited'])) {
+    if ($Total->count(['date' => date("Y-m-d")]) > 0) {
+        $total = $Total->find(['date' => date("Y-m-d")]);
+        $total['total']++;
+        $Total->save($total);
+    } else {
+        $Total->save(['date' => date("Y-m-d"), 'total' => 1]);
+    }
+    $_SESSION['visited'] = 1;
 }
