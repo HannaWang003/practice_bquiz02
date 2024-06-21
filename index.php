@@ -42,20 +42,25 @@ include_once "./api/db.php";
                 <div>
 
                     <span style="width:100%; display:inline-block;">
-                        <marquee style="width:80%;">請民眾踴躍投稿電子報，讓電子報成為大家相互交流、分享的園地！詳見最新文章</marquee>
+                        <marquee style="width:70%;">請民眾踴躍投稿電子報，讓電子報成為大家相互交流、分享的園地！詳見最新文章</marquee>
                         <?php
-if(!isset($_SESSION['user'])){
-	?>
+						if (!isset($_SESSION['user'])) {
+						?>
                         <a href="?do=login">會員登入</a>
                         <?php
-}else{
-	?>
-                        歡迎，<?=$_SESSION['user']?>
-                        <a href="./api/logout.php">登出</a>
+						} else {
+						?>
+                        歡迎，<?= $_SESSION['user'] ?>
                         <?php
-}
+							if ($_SESSION['user'] == 'admin') {
+								echo "<a href='back.php'><button>管理</button></a>";
+							}
+							?>
+                        <a href="./api/logout.php"><button>登出</button></a>
+                        <?php
+						}
 
-?>
+						?>
 
                     </span>
                     <div class="">
