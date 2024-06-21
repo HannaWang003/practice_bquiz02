@@ -23,17 +23,17 @@
     function login() {
         let acc = $('#acc').val();
         let pw = $('#pw').val();
-        $.post('./api/chk_acc.php', {
+        $.post("./api/chk_acc.php", {
             acc
-        }, function(res) {
+        }, (res) => {
             if (parseInt(res) == 0) {
-                alert("查無帳號")
-                clean()
+                alert("查無帳號");
+                clean();
             } else {
-                $.post('./api/chk_pw.php', {
+                $.post("./api/chk_pw.php", {
                     acc,
                     pw
-                }, function(res) {
+                }, (res) => {
                     if (parseInt(res) == 1) {
                         if (acc == "admin") {
                             location.href = "back.php";
@@ -41,8 +41,8 @@
                             location.href = "index.php";
                         }
                     } else {
-                        alert("密碼錯誤")
-                        clean()
+                        alert("密碼錯誤");
+                        clean();
                     }
                 })
             }

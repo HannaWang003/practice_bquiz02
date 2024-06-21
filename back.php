@@ -23,12 +23,12 @@ include_once "./api/db.php";
     <!-- <iframe name="back" style="display:none;"></iframe> -->
     <div id="all">
         <div id="title">
-            <?= date("m月d號 l") ?> | 今日瀏覽: <?= $Total->find(['date' => date("Y-m-d")])['total'] ?> | 累積瀏覽:
+            <?= date("m月d日 l") ?> | 今日瀏覽: <?= $Total->find(['date' => date("Y-m-d")])['total'] ?> | 累積瀏覽:
             <?= $Total->sum('total') ?>
-            <a href="index.php" style="float:right;">回首頁</a>
+            <a href="index.php" style="float:right">回首頁</a>
         </div>
         <div id="title2">
-            <a href="index.php"><img src="./icon/02B01.jpg" title="健康促進網 - 回首頁"></a>
+            <a href="index.php"><img src="./img/02B01.jpg" title="健康促進網-回首頁"></a>
         </div>
         <div id="mm">
             <div class="hal" id="lef">
@@ -46,24 +46,24 @@ include_once "./api/db.php";
                         <a href="?do=login">會員登入</a>
                     </span>
                     <div class="">
-                        <!-- step 1 -->
                         <?php
-                        $do = ($_GET['do']) ?? "main";
-                        $file = "./back/$do.php";
-                        if (file_exists($file)) {
-                            include $file;
-                        } else {
-                            include "./back/main.php";
-                        }
-                        ?>
+						$do = ($_GET['do']) ?? "main";
+						$file = "./back/$do.php";
+						if (file_exists($file)) {
+							include $file;
+						} else {
+							include "./back/main.php";
+						}
+
+						?>
                     </div>
                 </div>
             </div>
         </div>
         <div id="bottom">
-            本網站建議使用：IE9.0以上版本，1024 x 768 pixels 以上觀賞瀏覽 ， Copyright © 2024健康促進網社群平台 All Right Reserved
+            本網站建議使用：IE9.0以上版本，1024 x 768 pixels 以上觀賞瀏覽 ， Copyright © 2012健康促進網社群平台 All Right Reserved
             <br>
-            服務信箱：health@test.labor.gov.tw<img src="./icon/02B02.jpg" width="45">
+            服務信箱：health@test.labor.gov.tw<img src="./img/02B02.jpg" width="45">
         </div>
     </div>
 
