@@ -30,7 +30,13 @@ $news = $News->all(['sh' => 1], "limit $start,$div");
             <td id="a<?= $n['id'] ?>" style="display:none;" class="news"><?= $n['news'] ?></td>
             <?php
                 if (isset($_SESSION['user'])) {
+                    $good = $Log->find(['acc' => $_SESSION['user'], 'news' => $n['id']]);
                     echo "<th>";
+                    if ($good <= 0) {
+                        echo "<a onclick='good({$n['id']})'>讚</a>";
+                    } else {
+                        echo "<a onclick='ungood({$n['id']})'>收回讚</a>";
+                    }
                     echo "</th>";
                 }
                 ?>
@@ -63,4 +69,20 @@ $('.title').on('click', function() {
     let id = $(this).data('id');
     $(`#s${id},#a${id}`).toggle();
 })
+
+function good(id) {
+    $.post('./api/good.php', {
+        id
+    }, (res) => {
+        location.reload();
+    })
+}
+
+function ungood(id) {
+    $.post('./api/ungood.php', {
+        id
+    }, (res) => {
+        location.reload();
+    })
+}
 </script>
