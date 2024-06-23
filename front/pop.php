@@ -6,6 +6,18 @@ $now = ($_GET['p']) ?? 1;
 $start = ($now - 1) * $div;
 $news = $News->all(['sh' => 1], "order by `good` desc limit $start,$div");
 ?>
+<style>
+    .pop {
+        background: rgba(51, 51, 51, 0.8);
+        color: #FFF;
+        height: 350px;
+        width: 450px;
+        position: absolute;
+        display: none;
+        z-index: 9999;
+        overflow: auto;
+    }
+</style>
 <fieldset>
     <legend>目前位置:首頁 > 人氣文章區</legend>
     <table style="width:95%;margin:auto">
@@ -17,12 +29,16 @@ $news = $News->all(['sh' => 1], "order by `good` desc limit $start,$div");
         <?php
         foreach ($news as $n) {
         ?>
-        <tr>
-            <td class="clo title" data-id="<?= $n['id'] ?>"><?= $n['title'] ?></td>
-            <td id="s<?= $n['id'] ?>"><?= mb_substr($n['news'], 0, 20) ?>...</td>
-            <td id="a<?= $n['id'] ?>" style="display:none;" class="news"><?= $n['news'] ?></td>
-            <td>
-                <?php
+            <tr>
+                <td class="clo"><?= $n['title'] ?></td>
+                <td class="title" data-id="<?= $n['id'] ?>" style="display:relative"><?= mb_substr($n['news'], 0, 20) ?>...
+                    <div class="pop" id="a<?= $n['id'] ?>">
+                        <b style="margin:5px;color:rgb(39,225,225);"><?= $n['title'] ?></b>
+                        <pre><?= $n['news'] ?></pre>
+                    </div>
+                </td>
+                <td>
+                    <?php
                     echo $n['good'] . "個人說<img src='./img/02B03.jpg' style='width:30px;'>";
                     if (isset($_SESSION['user'])) {
                         $good = $Log->find(['acc' => $_SESSION['user'], 'news' => $n['id']]);
@@ -35,8 +51,8 @@ $news = $News->all(['sh' => 1], "order by `good` desc limit $start,$div");
                         echo "</th>";
                     }
                     ?>
-            </td>
-        </tr>
+                </td>
+            </tr>
         <?php
         }
         ?>
@@ -50,7 +66,7 @@ $news = $News->all(['sh' => 1], "order by `good` desc limit $start,$div");
         $style = "style='font-size:20px;'";
         for ($i = 1; $i <= $pages; $i++) {
         ?>
-        <a href="?do=pop&p=<?= $i ?>" <?= ($now == $i) ? $style : "" ?>><?= $i ?></a>
+            <a href="?do=pop&p=<?= $i ?>" <?= ($now == $i) ? $style : "" ?>><?= $i ?></a>
         <?php
         }
         if (($now + 1) <= $pages) {
@@ -61,24 +77,27 @@ $news = $News->all(['sh' => 1], "order by `good` desc limit $start,$div");
     </div>
 </fieldset>
 <script>
-$('.title').on('click', function() {
-    let id = $(this).data('id');
-    $(`#s${id},#a${id}`).toggle();
-})
-
-function good(id) {
-    $.post('./api/good.php', {
-        id
-    }, (res) => {
-        location.href = "?do=pop";
+    $('.title').hover(function() {
+        $('.pop').hide();
+        let id = $(this).data('id');
+        $(`#a${id}`).show();
+    }, function() {
+        $('.pop').hide();
     })
-}
 
-function ungood(id) {
-    $.post('./api/ungood.php', {
-        id
-    }, (res) => {
-        location.href = "?do=pop";
-    })
-}
+    function good(id) {
+        $.post('./api/good.php', {
+            id
+        }, (res) => {
+            location.href = "?do=pop";
+        })
+    }
+
+    function ungood(id) {
+        $.post('./api/ungood.php', {
+            id
+        }, (res) => {
+            location.href = "?do=pop";
+        })
+    }
 </script>
